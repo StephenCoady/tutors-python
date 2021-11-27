@@ -9,7 +9,11 @@ from frontmatter import Frontmatter as yaml
 def writeFile(folder,filename,contents):
     if not os.path.exists(folder):
         os.mkdir(folder)
-    return os.write(folder + '/' + filename, contents)
+        os.mknod(folder + '/' + filename)
+        file = open(folder + '/' + filename, 'a')
+        file.write(contents)
+    else:
+        pass
 
 def readFile(path1):
     if os.path.exists(path1):
