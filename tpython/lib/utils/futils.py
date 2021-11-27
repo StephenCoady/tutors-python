@@ -17,8 +17,11 @@ def writeFile(folder,filename,contents):
 
 def readFile(path1):
     if os.path.exists(path1):
-        array = os.read(path1).split('\n')
-        return array[0].replace('\r', '')
+        list_of_lines = []
+        open_file = open(path1, "r")
+        read_file = open_file.read()
+        list_of_lines = read_file.splitlines()
+        return list_of_lines[0].replace('\r', '')
     else:
         logging.warning('Unable to locate ' + path1)
 
