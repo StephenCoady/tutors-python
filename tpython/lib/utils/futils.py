@@ -42,12 +42,12 @@ def getDirectories(srcpath):
 
 def verifyFolder(folder):
     if not os.path.exists(folder):
-        os.mkdir('-p', folder)
+        os.makedirs(folder, exist_ok=True)
 
 def copyFileToFolder(src, dest):
     if os.path.exists(src):
-        os.mkdir('-p', dest)
-        sh.copy('-rf', src, dest)
+        os.makedirs(dest, exist_ok=True)
+        sh.copy2(src, dest)
 
 def copyFolder(src, dest):
     os.mkdir('-p', dest)

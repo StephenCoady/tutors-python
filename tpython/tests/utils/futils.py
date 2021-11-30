@@ -1,9 +1,11 @@
 from genericpath import isfile
-from lib.utils.futils import getParentFolder, writeFile, readFile, getImageFile, getDirectories
+from lib.utils.futils import copyFileToFolder, getParentFolder, verifyFolder, writeFile, readFile, getImageFile, getDirectories
 import os
+
 
 folder = "tests"
 folders = "test2/subtest/subsubtest"
+f2 = "t3/tt3"
 file = "futil_test_file"
 mdfile = "test_md_file.md"
 path = folder + '/' + file
@@ -67,6 +69,20 @@ def test_verify_folder():
     except:
         print("Doesn't exist")
     assert not os.path.exists(folders)
-    os.makedirs(folders, exist_ok=True)
+    verifyFolder(folders)
     assert os.path.exists(folders)
-    
+
+def test_copy_file_to_folder():
+    try:
+        os.remove(img_file)
+        os.remove(f2 + "/" + img_file)
+        os.rmdir(f2)
+    except:
+        print("Doesn't exist")
+    assert not os.path.exists(f2)
+    os.makedirs(f2, exist_ok=True)
+    os.mknod(img_file)
+    assert os.path.exists(f2)
+    assert os.path.exists(img_file)
+    copyFileToFolder(img_file, f2)
+    assert os.path.exists(f2 + "/" + img_file)
