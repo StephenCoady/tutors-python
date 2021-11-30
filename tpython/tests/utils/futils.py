@@ -5,11 +5,8 @@ import os
 
 folder = "tests"
 folders = "test2/subtest/subsubtest"
-f2 = "t3/tt3"
 file = "futil_test_file"
-mdfile = "test_md_file.md"
 path = folder + '/' + file
-mdpath = folder + '/' + mdfile
 img_file = "image.jpg"
 
 
@@ -51,6 +48,8 @@ def test_get_parent_folder():
     assert parent == "src" # This must be changed to your parent folder to pass
 
 def test_get_directories():
+    mdfile = "test_md_file.md"
+    mdpath = folder + '/' + mdfile
     try:
         os.remove(mdpath)
         os.rmdir(folder)
@@ -73,16 +72,17 @@ def test_verify_folder():
     assert os.path.exists(folders)
 
 def test_copy_file_to_folder():
+    folder_path = "t3/tt3"
     try:
         os.remove(img_file)
-        os.remove(f2 + "/" + img_file)
-        os.rmdir(f2)
+        os.remove(folder_path+ "/" + img_file)
+        os.rmdir(folder_path)
     except:
         print("Doesn't exist")
-    assert not os.path.exists(f2)
-    os.makedirs(f2, exist_ok=True)
+    assert not os.path.exists(folder_path)
+    os.makedirs(folder_path, exist_ok=True)
     os.mknod(img_file)
-    assert os.path.exists(f2)
+    assert os.path.exists(folder_path)
     assert os.path.exists(img_file)
-    copyFileToFolder(img_file, f2)
-    assert os.path.exists(f2 + "/" + img_file)
+    copyFileToFolder(img_file, folder_path)
+    assert os.path.exists(folder_path + "/" + img_file)
