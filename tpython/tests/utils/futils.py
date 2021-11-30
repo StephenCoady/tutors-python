@@ -1,10 +1,10 @@
-from lib.utils.futils import writeFile, readFile
+from lib.utils.futils import getParentFolder, writeFile, readFile, getImageFile
 import os
-import pytest
 
 folder = "tests"
 file = "futil_test_file"
 path = folder + '/' + file
+img_file = "image.jpg"
 
 
 def test_write_file():
@@ -27,11 +27,11 @@ def test_read_file():
     assert '\r' not in new_file
 
 def test_get_image():
-    remove_test_dir
-    try:
-        os.remove("image.jpg")
-    except:
-        pass
+    remove_test_dir()
     os.mknod("image.jpg")
     test_img = getImageFile("image")
     assert test_img == "image.jpg"
+
+def test_get_parent_folder():
+    parent = getParentFolder()
+    assert parent == "src" # This must be changed to your parent folder to pass

@@ -34,7 +34,7 @@ def getImageFile(name):
             return image
 
 def getParentFolder():
-    return os.path.basename(os.path.dirname(os.getcwd)) 
+    return os.path.basename(os.path.dirname(os.getcwd())) 
 
 def getDirectories(srcpath):
     onlyfiles = [f for f in listdir(srcpath) if isfile(join(srcpath, f))]
