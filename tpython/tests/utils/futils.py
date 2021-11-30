@@ -3,6 +3,7 @@ from lib.utils.futils import getParentFolder, writeFile, readFile, getImageFile,
 import os
 
 folder = "tests"
+folders = "test2/subtest/subsubtest"
 file = "futil_test_file"
 mdfile = "test_md_file.md"
 path = folder + '/' + file
@@ -55,10 +56,17 @@ def test_get_directories():
         print("Doesn't exist")
     src = "."
     writeFile(src, mdfile, "test")
-
     directories = []
     directories = getDirectories(src)
     for item in directories:
         assert isfile(item)
 
+def test_verify_folder():
+    try:
+        os.rmdir(folders)
+    except:
+        print("Doesn't exist")
+    assert not os.path.exists(folders)
+    os.makedirs(folders, exist_ok=True)
+    assert os.path.exists(folders)
     
