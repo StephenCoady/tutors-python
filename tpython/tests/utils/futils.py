@@ -25,3 +25,13 @@ def test_read_file():
     writeFile(folder, file, contents)
     new_file = readFile(path)
     assert '\r' not in new_file
+
+def test_get_image():
+    remove_test_dir
+    try:
+        os.remove("image.jpg")
+    except:
+        pass
+    os.mknod("image.jpg")
+    test_img = getImageFile("image")
+    assert test_img == "image.jpg"
