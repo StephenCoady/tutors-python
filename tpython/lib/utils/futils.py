@@ -1,4 +1,4 @@
-from genericpath import exists
+from genericpath import exists, isdir
 import shutil as sh
 from os.path import isfile, join
 from os import listdir
@@ -32,12 +32,14 @@ def getImageFile(name):
         image = name + '.' + type
         if os.path.exists(image):
             return image
+        else:
+            pass
 
 def getParentFolder():
     return os.path.basename(os.path.dirname(os.getcwd())) 
 
 def getDirectories(srcpath):
-    onlyfiles = [f for f in listdir(srcpath) if isfile(join(srcpath, f))]
+    onlyfiles = [f for f in listdir(srcpath) if isdir(join(srcpath, f))]
     return onlyfiles
 
 def verifyFolder(folder):
@@ -50,8 +52,8 @@ def copyFileToFolder(src, dest):
         sh.copy2(src, dest)
 
 def copyFolder(src, dest):
-    os.mkdir('-p', dest)
-    sh.copy('-rf', src, dest)
+    os.makedirs(dest, exist_ok=True)
+    sh.copy2(src, dest)
 
 def readWholeFile(path1):
     if os.path.exists(path1):
