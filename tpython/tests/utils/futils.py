@@ -1,5 +1,5 @@
 from genericpath import isdir, isfile
-from lib.utils.futils import copyFileToFolder, getParentFolder, verifyFolder, writeFile, readFile, getImageFile, getDirectories
+from lib.utils.futils import copyFileToFolder, copyFolder, getParentFolder, verifyFolder, writeFile, readFile, getImageFile, getDirectories
 import os
 
 
@@ -69,3 +69,14 @@ def test_copy_file_to_folder():
     os.remove(img_file)
     os.remove(folder_path+ "/" + img_file)
     os.removedirs(folder_path)
+
+def test_copy_folder():
+    src = "src"
+    dest = "dst"
+    os.makedirs(src)
+    assert os.path.exists(src)
+    assert not os.path.exists(dest)
+    copyFolder(src, dest)
+    assert os.path.exists(dest)
+    os.rmdir(src)
+    os.rmdir(dest)

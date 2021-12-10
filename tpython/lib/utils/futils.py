@@ -52,8 +52,7 @@ def copyFileToFolder(src, dest):
         sh.copy2(src, dest)
 
 def copyFolder(src, dest):
-    os.makedirs(dest, exist_ok=True)
-    sh.copy2(src, dest)
+    sh.copytree(src, dest)
 
 def readWholeFile(path1):
     if os.path.exists(path1):
