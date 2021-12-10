@@ -80,15 +80,6 @@ def readCalendar(path):
         yamldata = frontmatter.load(yam)
     return yamldata
 
-def getHeader(fileName):
-    header = ''
-    array = os.read(fileName).split('\n')
-    if array[0][0] == '#':
-        header = array[0][0:2]
-    else:
-        header = array[0]
-    return header
-
 def withoutHeader(fileName):
     content = os.read(fileName)
     line1 = content.index('\n')
