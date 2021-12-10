@@ -8,7 +8,7 @@ from frontmatter import Frontmatter as yaml
 
 def writeFile(folder,filename,contents):
     if not os.path.exists(folder):
-        os.mkdir(folder)
+        os.makedirs(folder)
         os.mknod(folder + '/' + filename)
         file = open(folder + '/' + filename, 'a')
         file.write(contents)
@@ -54,12 +54,13 @@ def copyFileToFolder(src, dest):
 def copyFolder(src, dest):
     sh.copytree(src, dest)
 
-def readWholeFile(path1):
-    if os.path.exists(path1):
-        array = os.open(path1)
-        return array
+def readWholeFile(path):
+    if os.path.exists(path):
+        open_content = open(path)
+        file_content = open_content.read()
+        return file_content
     else:
-        logging.warning('Unable to locate ' + path1)
+        print('Unable to locate ' + path)
 
 def readYaml(path):
     yamldata = ''

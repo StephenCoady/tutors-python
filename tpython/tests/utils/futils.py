@@ -6,10 +6,12 @@ from lib.utils.futils import (
     verifyFolder,
     writeFile,
     readFile,
+    readWholeFile,
     getImageFile,
     getDirectories,
 )
 import os
+import time
 
 
 folder = "tests"
@@ -94,3 +96,17 @@ def test_copy_folder():
     assert os.path.exists(dest)
     os.rmdir(src)
     os.rmdir(dest)
+
+
+def test_read_whole_file():
+    file_path = "tests/readwhole/"
+    file_name = "file.txt"
+    content = "I am the content"
+    file = readWholeFile(file_path + file_name)
+    assert not file
+    writeFile(file_path,file_name, content)
+    assert os.path.exists(file_path + file_name)
+    final_file = readWholeFile(file_path + file_name)
+    assert final_file == content
+    os.remove(file_path + file_name)
+    os.removedirs(file_path)
