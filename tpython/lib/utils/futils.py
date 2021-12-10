@@ -95,7 +95,7 @@ def getHeaderFromBody(body):
     array = body.split('\n')
     header = ''
     if array[0][0] == '#':
-        header = array[0][0:2]
+        header = array[0][1:]
     else:
         header = array[0]
     return header           

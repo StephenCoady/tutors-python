@@ -4,6 +4,7 @@ from tests.utils.futils import (
     test_read_file,
     test_read_whole_file,
     test_read_yaml,
+    test_get_header_from_body,
     test_get_image,
     test_get_parent_folder,
     test_get_directories,
@@ -23,3 +24,4 @@ test_copy_folder()
 test_read_whole_file()
 test_read_yaml()
 test_without_header()
+test_get_header_from_body()

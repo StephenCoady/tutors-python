@@ -8,6 +8,7 @@ from lib.utils.futils import (
     writeFile,
     readFile,
     readWholeFile,
+    getHeaderFromBody,
     getImageFile,
     getDirectories,
     withoutHeader,
@@ -139,3 +140,18 @@ def test_without_header():
     writeFile(file_path, file_name, content)
     new_contents = withoutHeader(file_path + file_name)
     assert new_contents == content[18:-17]
+    os.remove(file_path + file_name)
+    os.removedirs(file_path)
+
+def test_get_header_from_body():
+    file_path = "tests/headfrombody/"
+    file_name = "file.txt"
+    body = "#This is line one \nWhile this is line two\nA third? amazing"
+    index = body.index("\n")
+    writeFile(file_path, file_name, body)
+    open_file = open(file_path + file_name)
+    read_file = open_file.read()
+    new_contents = getHeaderFromBody(read_file)
+    assert new_contents == body[1:index]
+    os.remove(file_path + file_name)
+    os.removedirs(file_path)
