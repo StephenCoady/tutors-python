@@ -70,30 +70,15 @@ def readYaml(path):
 
 def readEnrollment(path):
     yamldata = ''
-    try:
-        yamldata = frontmatter.load(os.open(path, encoding='utf-8'))
-    except:
-        logging.warning('Tutors ${version} encountered an error reading the enrollment file:')
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.mark.buffer)
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.message)
-        logging.warning('Ignoring enrolling file for the moment....')
+    with open(path) as yam:
+        yamldata = frontmatter.load(yam)
     return yamldata
 
 def readCalendar(path):
     yamldata = ''
-    try:
-        yamldata = frontmatter.load(os.open(path, encoding='utf-8'))
-    except:
-        logging.warning('Tutors ${version} encountered an error reading the calendar file:')
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.mark.buffer)
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.message)
-        logging.warning('Ignoring calendar file for the moment....')
+    with open(path) as yam:
+        yamldata = frontmatter.load(yam)
     return yamldata
-
 
 def getHeader(fileName):
     header = ''
