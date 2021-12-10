@@ -1,29 +1,36 @@
+import os
+
 from genericpath import isdir
 from lib.utils.futils import (
     copyFileToFolder,
     copyFolder,
-    getParentFolder,
-    readYaml,
-    verifyFolder,
-    writeFile,
-    readFile,
-    readWholeFile,
+    getDirectories,
     getHeaderFromBody,
     getImageFile,
-    getDirectories,
+    getParentFolder,
+    initPath,
+    readFile,
+    readWholeFile,
+    readYaml,
+    verifyFolder,
     withoutHeader,
+    withoutHeaderFromBody,
+    writeFile,
 )
-import os
-import time
 
-
-folder = "tests"
-folders = "test2/subtest/subsubtest"
+folder = "test"
+folders = "testTwo/subtest/subsubtest"
 file = "futil_test_file"
 path = folder + "/" + file
 img_file = "image.jpg"
 mdfile = "test_md_file.md"
 mdpath = folder + "/" + mdfile
+
+
+def test_init_path():
+    initPath(folders)
+    assert os.path.exists(folders)
+    os.removedirs(folders)
 
 
 def test_write_file():
@@ -107,12 +114,13 @@ def test_read_whole_file():
     content = "I am the content"
     file = readWholeFile(file_path + file_name)
     assert not file
-    writeFile(file_path,file_name, content)
+    writeFile(file_path, file_name, content)
     assert os.path.exists(file_path + file_name)
     final_file = readWholeFile(file_path + file_name)
     assert final_file == content
     os.remove(file_path + file_name)
     os.removedirs(file_path)
+
 
 def test_read_yaml():
     file_path = "tests/readyaml/"
@@ -133,6 +141,7 @@ yaml:
     os.remove(file_path + file_name)
     os.removedirs(file_path)
 
+
 def test_without_header():
     file_path = "tests/nohead/"
     file_name = "file.txt"
@@ -142,6 +151,7 @@ def test_without_header():
     assert new_contents == content[18:-17]
     os.remove(file_path + file_name)
     os.removedirs(file_path)
+
 
 def test_get_header_from_body():
     file_path = "tests/headfrombody/"
@@ -153,5 +163,18 @@ def test_get_header_from_body():
     read_file = open_file.read()
     new_contents = getHeaderFromBody(read_file)
     assert new_contents == body[1:index]
+    os.remove(file_path + file_name)
+    os.removedirs(file_path)
+
+
+def test_without_header_from_body():
+    file_path = "tests/withoutheadfrombody/"
+    file_name = "file.txt"
+    body = "#This is line one \nWhile this is line two\nA third? amazing"
+    writeFile(file_path, file_name, body)
+    open_file = open(file_path + file_name)
+    read_file = open_file.read()
+    new_contents = withoutHeaderFromBody(read_file)
+    assert new_contents == body[19:-17]
     os.remove(file_path + file_name)
     os.removedirs(file_path)

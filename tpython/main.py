@@ -1,5 +1,6 @@
 from tests.utils.futils import (
     test_copy_folder,
+    test_init_path,
     test_write_file,
     test_read_file,
     test_read_whole_file,
@@ -11,6 +12,7 @@ from tests.utils.futils import (
     test_copy_file_to_folder,
     test_verify_folder,
     test_without_header,
+    test_without_header_from_body,
 )
 
 test_write_file()
@@ -18,10 +20,12 @@ test_read_file()
 test_get_image()
 test_get_parent_folder()
 test_get_directories()
-test_copy_file_to_folder
+test_copy_file_to_folder()
 test_verify_folder()
 test_copy_folder()
 test_read_whole_file()
 test_read_yaml()
 test_without_header()
 test_get_header_from_body()
+test_without_header_from_body()
+test_init_path()
