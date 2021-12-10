@@ -81,7 +81,8 @@ def readCalendar(path):
     return yamldata
 
 def withoutHeader(fileName):
-    content = os.read(fileName)
+    file = open(fileName, "r")
+    content = file.read()
     line1 = content.index('\n')
     content = content[line1 + 1 : len(content)]    
     content = content.strip()

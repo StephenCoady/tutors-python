@@ -10,6 +10,7 @@ from lib.utils.futils import (
     readWholeFile,
     getImageFile,
     getDirectories,
+    withoutHeader,
 )
 import os
 import time
@@ -113,7 +114,7 @@ def test_read_whole_file():
     os.removedirs(file_path)
 
 def test_read_yaml():
-    file_path = "tests/readwhole/"
+    file_path = "tests/readyaml/"
     file_name = "file.yaml"
     yaml_content = """json:
   - rigid
@@ -130,3 +131,11 @@ yaml:
     assert yaml_content == yaml_data
     os.remove(file_path + file_name)
     os.removedirs(file_path)
+
+def test_without_header():
+    file_path = "tests/nohead/"
+    file_name = "file.txt"
+    content = "This is line one \nWhile this is line two\nA third? amazing"
+    writeFile(file_path, file_name, content)
+    new_contents = withoutHeader(file_path + file_name)
+    assert new_contents == content[18:-17]
