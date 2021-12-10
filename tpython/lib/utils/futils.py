@@ -4,7 +4,7 @@ from os.path import isfile, join
 from os import listdir
 import os
 import logging
-from frontmatter import Frontmatter as yaml
+import frontmatter
 
 def writeFile(folder,filename,contents):
     if not os.path.exists(folder):
@@ -64,21 +64,14 @@ def readWholeFile(path):
 
 def readYaml(path):
     yamldata = ''
-    try:
-        yamldata = yaml.load(os.open(path, encoding='utf-8'))
-    except:
-        logging.warning('Tutors ${version} encountered an error reading properties.yaml:')
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.mark.buffer)
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.message)
-        logging.warning('Review this file and try again....')
+    with open(path) as yam:
+        yamldata = frontmatter.load(yam)
     return yamldata
 
 def readEnrollment(path):
     yamldata = ''
     try:
-        yamldata = yaml.load(os.open(path, encoding='utf-8'))
+        yamldata = frontmatter.load(os.open(path, encoding='utf-8'))
     except:
         logging.warning('Tutors ${version} encountered an error reading the enrollment file:')
         logging.warning('--------------------------------------------------------------')
@@ -91,7 +84,7 @@ def readEnrollment(path):
 def readCalendar(path):
     yamldata = ''
     try:
-        yamldata = yaml.load(os.open(path, encoding='utf-8'))
+        yamldata = frontmatter.load(os.open(path, encoding='utf-8'))
     except:
         logging.warning('Tutors ${version} encountered an error reading the calendar file:')
         logging.warning('--------------------------------------------------------------')

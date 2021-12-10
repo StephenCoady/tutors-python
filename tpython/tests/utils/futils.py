@@ -3,6 +3,7 @@ from lib.utils.futils import (
     copyFileToFolder,
     copyFolder,
     getParentFolder,
+    readYaml,
     verifyFolder,
     writeFile,
     readFile,
@@ -108,5 +109,24 @@ def test_read_whole_file():
     assert os.path.exists(file_path + file_name)
     final_file = readWholeFile(file_path + file_name)
     assert final_file == content
+    os.remove(file_path + file_name)
+    os.removedirs(file_path)
+
+def test_read_yaml():
+    file_path = "tests/readwhole/"
+    file_name = "file.yaml"
+    yaml_content = """json:
+  - rigid
+  - better for data interchange
+yaml: 
+  - slim and flexible
+  - better for configuration
+    """
+    writeFile(file_path, file_name, yaml_content)
+    assert os.path.exists(file_path + file_name)
+    yaml_data = readYaml(file_path + file_name)
+    yaml_data = yaml_data.content
+    yaml_content = yaml_content.lstrip().rstrip()
+    assert yaml_content == yaml_data
     os.remove(file_path + file_name)
     os.removedirs(file_path)
