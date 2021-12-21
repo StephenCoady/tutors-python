@@ -82,24 +82,18 @@ def readWholeFile(path):
 
 
 def readYaml(path):
-    yamldata = ""
     with open(path) as yam:
-        yamldata = frontmatter.load(yam)
-    return yamldata
+        return frontmatter.load(yam)
 
 
 def readEnrollment(path):
-    yamldata = ""
     with open(path) as yam:
-        yamldata = frontmatter.load(yam)
-    return yamldata
+       return frontmatter.load(yam)
 
 
 def readCalendar(path):
-    yamldata = ""
     with open(path) as yam:
-        yamldata = frontmatter.load(yam)
-    return yamldata
+        return frontmatter.load(yam)
 
 
 def withoutHeader(fileName):
