@@ -42,6 +42,15 @@ def test_write_file():
     assert contents == read_file
     os.remove(path)
     os.rmdir(folder)
+    os.mkdir(folder)
+    assert not os.path.exists(path)
+    writeFile(folder, file, contents)
+    assert os.path.exists(path)
+    second_open_file = open(path, "r")
+    second_read_file = second_open_file.read()
+    assert contents == second_read_file
+    os.remove(path)
+    os.rmdir(folder)
 
 
 def test_read_file():

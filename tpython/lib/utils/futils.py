@@ -1,9 +1,10 @@
 from genericpath import isdir
-import shutil as sh
 from os.path import join
 from os import listdir
 import os
 import logging
+import shutil as sh
+
 import frontmatter
 
 
@@ -12,14 +13,18 @@ def initPath(path):
 
 
 def writeFile(folder, filename, contents):
+    path = join(folder,filename)
     if not os.path.exists(folder):
         os.makedirs(folder)
-        os.mknod(folder + "/" + filename)
-        file = open(folder + "/" + filename, "a")
+        os.mknod(path)
+        file = open(path, "a")
         file.write(contents)
-    else:
-        pass
-
+        file.close()
+    elif os.path.exists(folder) and not os.path.exists(path):
+        os.mknod(path)
+        file = open(path, "a")
+        file.write(contents)
+        file.close()
 
 def readFile(path1):
     if os.path.exists(path1):
