@@ -1,136 +1,128 @@
-from genericpath import exists
-import shutil as sh
-from os.path import isfile, join
+from genericpath import isdir
+from os.path import join
 from os import listdir
 import os
 import logging
-from frontmatter import Frontmatter as yaml
+import shutil as sh
 
-def writeFile(folder,filename,contents):
+import frontmatter
+
+
+def initPath(path):
+    os.makedirs(path)
+
+
+def writeFile(folder, filename, contents):
+    path = join(folder,filename)
     if not os.path.exists(folder):
-        os.mkdir(folder)
-    return os.write(folder + '/' + filename, contents)
+        os.makedirs(folder)
+        os.mknod(path)
+        file = open(path, "a")
+        file.write(contents)
+        file.close()
+    elif os.path.exists(folder) and not os.path.exists(path):
+        os.mknod(path)
+        file = open(path, "a")
+        file.write(contents)
+        file.close()
 
 def readFile(path1):
     if os.path.exists(path1):
-        array = os.read(path1).split('\n')
-        return array[0].replace('\r', '')
+        list_of_lines = []
+        open_file = open(path1, "r")
+        read_file = open_file.read()
+        list_of_lines = read_file.splitlines()
+        return list_of_lines[0].replace("\r", "")
     else:
-        logging.warning('Unable to locate ' + path1)
+        logging.warning("Unable to locate " + path1)
+
 
 def getImageFile(name):
-    validImageTypes = ['png','jpg','jpeg','gif']
-    image = ''
+    validImageTypes = ["png", "jpg", "jpeg", "gif"]
+    image = ""
     for type in validImageTypes:
-        image = name + '.' + type
+        image = name + "." + type
         if os.path.exists(image):
             return image
+        else:
+            pass
+
 
 def getParentFolder():
-    return os.path.basename(os.path.dirname(os.getcwd)) 
+    return os.path.basename(os.path.dirname(os.getcwd()))
+
 
 def getDirectories(srcpath):
-    onlyfiles = [f for f in listdir(srcpath) if isfile(join(srcpath, f))]
+    onlyfiles = [f for f in listdir(srcpath) if isdir(join(srcpath, f))]
     return onlyfiles
+
 
 def verifyFolder(folder):
     if not os.path.exists(folder):
-        os.mkdir('-p', folder)
+        os.makedirs(folder, exist_ok=True)
+
 
 def copyFileToFolder(src, dest):
     if os.path.exists(src):
-        os.mkdir('-p', dest)
-        sh.copy('-rf', src, dest)
+        os.makedirs(dest, exist_ok=True)
+        sh.copy2(src, dest)
+
 
 def copyFolder(src, dest):
-    os.mkdir('-p', dest)
-    sh.copy('-rf', src, dest)
+    sh.copytree(src, dest)
 
-def readWholeFile(path1):
-    if os.path.exists(path1):
-        array = os.open(path1)
-        return array
+
+def readWholeFile(path):
+    if os.path.exists(path):
+        open_content = open(path)
+        file_content = open_content.read()
+        return file_content
     else:
-        logging.warning('Unable to locate ' + path1)
+        print("Unable to locate " + path)
+
 
 def readYaml(path):
-    yamldata = ''
-    try:
-        yamldata = yaml.load(os.open(path, encoding='utf-8'))
-    except:
-        logging.warning('Tutors ${version} encountered an error reading properties.yaml:')
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.mark.buffer)
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.message)
-        logging.warning('Review this file and try again....')
-    return yamldata
+    with open(path) as yam:
+        return frontmatter.load(yam)
+
 
 def readEnrollment(path):
-    yamldata = ''
-    try:
-        yamldata = yaml.load(os.open(path, encoding='utf-8'))
-    except:
-        logging.warning('Tutors ${version} encountered an error reading the enrollment file:')
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.mark.buffer)
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.message)
-        logging.warning('Ignoring enrolling file for the moment....')
-    return yamldata
+    with open(path) as yam:
+       return frontmatter.load(yam)
+
 
 def readCalendar(path):
-    yamldata = ''
-    try:
-        yamldata = yaml.load(os.open(path, encoding='utf-8'))
-    except:
-        logging.warning('Tutors ${version} encountered an error reading the calendar file:')
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.mark.buffer)
-        logging.warning('--------------------------------------------------------------')
-        #logging.warning(err.message)
-        logging.warning('Ignoring calendar file for the moment....')
-    return yamldata
+    with open(path) as yam:
+        return frontmatter.load(yam)
 
-
-def getHeader(fileName):
-    header = ''
-    array = os.read(fileName).split('\n')
-    if array[0][0] == '#':
-        header = array[0][0:2]
-    else:
-        header = array[0]
-    return header
 
 def withoutHeader(fileName):
-    content = os.read(fileName)
-    line1 = content.index('\n')
-    content = content[line1 + 1 : len(content)]    
-    content = content.strip()
-    line2 = content.index('\n')
-    if(line2 > -1):
-        content = content[0 : line2]
-    return content
-
-def getHeaderFromBody(body):
-    array = body.split('\n')
-    header = ''
-    if array[0][0] == '#':
-        header = array[0][0:2]
-    else:
-        header = array[0]
-    return header           
-
-def withoutHeaderFromBody(body):
-    content = body
-    line1 = content.index('\n')
+    file = open(fileName, "r")
+    content = file.read()
+    line1 = content.index("\n")
     content = content[line1 + 1 : len(content)]
     content = content.strip()
-    line2 = content.index('\n')
+    line2 = content.index("\n")
     if line2 > -1:
         content = content[0:line2]
     return content
 
-def initPath(path):
-    os.mkdir('-p', path)
 
+def getHeaderFromBody(body):
+    array = body.split("\n")
+    header = ""
+    if array[0][0] == "#":
+        header = array[0][1:]
+    else:
+        header = array[0]
+    return header
+
+
+def withoutHeaderFromBody(content):
+    line1 = content.index("\n")
+    content = content[line1 + 1 : len(content)]
+    content = content.strip()
+    line2 = content.index("\n")
+    if line2 > -1:
+        content = content[0:line2]
+    return content
